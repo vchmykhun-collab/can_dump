@@ -3,7 +3,7 @@ CAN Dump
 
 A simple console sniffer for CAN bus traffic
 
-![alt text](https://github.com/vchmykhun-collab/can_dump/assets/blob/master/sniffer.png?raw=true)
+![alt text](https://github.com/vchmykhun-collab/can_dump/blob/master/assets/sniffer.png?raw=true)
 
 
 Usage

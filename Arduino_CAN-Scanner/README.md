@@ -3,7 +3,7 @@ CAN Dump : Arduino CAN scanner part
 
 Please assemble a circuit according to following diagram
 
-![alt text](https://github.com/vchmykhun-collab/can_dump/Arduino_CAN-Scanner/assets/blob/master/MCP2515.png?raw=true)
+![alt text](https://github.com/vchmykhun-collab/can_dump/blob/master/Arduino_CAN-Scanner/assets/MCP2515.png?raw=true)
 
 Configuraton notes:
 
