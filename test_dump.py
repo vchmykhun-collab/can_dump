@@ -11,8 +11,8 @@ from dump import dump, CanFrame
 DISPLAY_COLS = 4
 STEP_TIMEOUT = 50
 DIMM_TIMEOUT = 50
-fname = "e60_pdc.trc.txt"
-# fname = "bmw x5 F15 copy.txt"
+fname = "data/e60_pdc.trc.txt"
+# fname = data/"bmw x5 F15 copy.txt"
 with open(fname) as f:
     heading = f.readline()
     columns = re.split(r"\s+", heading)
