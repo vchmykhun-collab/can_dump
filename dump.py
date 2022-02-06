@@ -2,7 +2,7 @@ import sys
 import time
 # from collections import deque
 
-RELOAD_TIMEOUT = 50
+RELOAD_TIMEOUT = 1000/20
 
 class bcolors:
     HEADER = '\033[95m'
@@ -54,20 +54,35 @@ queue = []
 ids = {}
 
 prev_time = 0
+fps_time = 0
+fps = 0
+fps_counter = 0
+row_displayed = 0
 
 def dump(obj: CanFrame, cols=3, dimming_time=1000):
     canid = obj.id
-    global prev_time
-    
+
+    global prev_time, fps_time, fps_counter, fps, row_displayed
+
+    if timeMillis()-fps_time > 1000:
+      fps_time = timeMillis()
+      fps = fps_counter
+      fps_counter = 0
+
     reload_screen = timeMillis()-prev_time > RELOAD_TIMEOUT
     if reload_screen:
       prev_time = timeMillis()
+      fps_counter = fps_counter + 1
 
     if reload_screen:
       # move up cursor and delete whole line
-      # for _ in range(len(queue)):
-      for _ in range(0, len(queue), cols):
-          sys.stdout.write("\x1b[1A\x1b[2K") 
+
+      # sys.stdout.write("\x1b[1A\x1b[2K")
+      # for _ in range(0, len(queue), cols):
+      #     sys.stdout.write("\x1b[1A\x1b[2K") 
+
+      for _ in range(0, row_displayed):
+        sys.stdout.write("\x1b[1A\x1b[2K") 
 
     if ids.get(canid, -1) != -1:
         prev_frame: CanFrame = queue[ids[canid]]
@@ -80,10 +95,10 @@ def dump(obj: CanFrame, cols=3, dimming_time=1000):
 
     if reload_screen:
       # reprint the lines
-      # for i in range(len(queue)):
-      #     line_str = str(queue[i])
-      #     sys.stdout.write(line_str + "\n")
-
+      row_displayed = 0
+      sys.stdout.write(f"{bcolors.UNDERLINE}Caption FPS {fps}{bcolors.ENDC}\n")
+      row_displayed = 1
       for row_offset in range(0, len(queue), cols):
           sys.stdout.write(' | '.join(str(x) for x in queue[row_offset: row_offset+cols]))
           sys.stdout.write("\n")
+          row_displayed = row_displayed + 1

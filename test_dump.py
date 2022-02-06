@@ -1,5 +1,6 @@
 import time
 import re
+import sys
 
 from dump import dump, CanFrame
 
@@ -9,28 +10,32 @@ from dump import dump, CanFrame
 
 DISPLAY_COLS = 4
 STEP_TIMEOUT = 50
-DIMM_TIMEOUT = 1000
+DIMM_TIMEOUT = 50
 fname = "e60_pdc.trc.txt"
 # fname = "bmw x5 F15 copy.txt"
 with open(fname) as f:
     heading = f.readline()
     columns = re.split(r"\s+", heading)
+    try:
+        while True:
+            line = f.readline()
+            line = line[:41]
+            if not line:
+                break
+            row = re.split(r"\s+", line)
+            
+            if not row[-1:][0]:
+                row = row[:-1]
 
-    while True:
-        line = f.readline()
-        line = line[:41]
-        if not line:
-            break
-        row = re.split(r"\s+", line)
-        
-        if not row[-1:][0]:
-            row = row[:-1]
+            # data = [row[0], row[1], row[2], row[3:]]
+            # can_frame = dict(zip(columns, data))
+            
+            frame = CanFrame(time=row[0], id=row[1], dlc=row[2], data=row[3:])
 
-        # data = [row[0], row[1], row[2], row[3:]]
-        # can_frame = dict(zip(columns, data))
-        
-        frame = CanFrame(time=row[0], id=row[1], dlc=row[2], data=row[3:])
+            dump(frame, cols=DISPLAY_COLS, dimming_time=DIMM_TIMEOUT)
+            time.sleep(STEP_TIMEOUT/1000)
 
-        dump(frame, cols=DISPLAY_COLS, dimming_time=DIMM_TIMEOUT)
-        time.sleep(STEP_TIMEOUT/1000)
-
+    except KeyboardInterrupt:
+        # quit
+        f.close()
+        sys.exit()
