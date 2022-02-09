@@ -8,7 +8,7 @@ New messages are appended at the end of a list, repeated messages highlighted.
 
 Arduino circuit
 ===
-![alt text](https://github.com/vchmykhun-collab/can_dump/blob/master/assets/can%20dump%20arduino.png.png?raw=true)
+![alt text](https://github.com/vchmykhun-collab/can_dump/blob/master/assets/can%20dump%20arduino.png?raw=true)
 
 Usage
 ===
